@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.009">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.009" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" breakpoints="after" class="subprocess" compatibility="5.3.009" expanded="true" height="76" name="Data generation" width="90" x="45" y="120">
+        <description>The generated data contains 10 Examples with 13 Attributes. The first 12 Attributes are numbered from 1 to 12 and the last Attribute is named as "unnecessary", meaning that it shouldn't be involved into the CReMIT method.</description>
+        <process expanded="true">
+          <operator activated="true" class="generate_data" compatibility="5.3.009" expanded="true" height="60" name="Generate Data" width="90" x="45" y="75">
+            <parameter key="target_function" value="random"/>
+            <parameter key="number_examples" value="10"/>
+            <parameter key="number_of_attributes" value="12"/>
+            <parameter key="attributes_lower_bound" value="1.0"/>
+            <parameter key="attributes_upper_bound" value="10.0"/>
+            <parameter key="use_local_random_seed" value="false"/>
+            <parameter key="local_random_seed" value="1992"/>
+            <parameter key="datamanagement" value="double_array"/>
+          </operator>
+          <operator activated="true" class="set_role" compatibility="5.3.009" expanded="true" height="76" name="Set label role to regular" width="90" x="179" y="75">
+            <parameter key="attribute_name" value="label"/>
+            <parameter key="target_role" value="regular"/>
+            <list key="set_additional_roles"/>
+          </operator>
+          <operator activated="true" class="rename" compatibility="5.3.009" expanded="true" height="76" name="Rename" width="90" x="313" y="75">
+            <parameter key="old_name" value="att1"/>
+            <parameter key="new_name" value="1"/>
+            <list key="rename_additional_attributes">
+              <parameter key="att2" value="2"/>
+              <parameter key="att3" value="3"/>
+              <parameter key="att4" value="4"/>
+              <parameter key="att5" value="5"/>
+              <parameter key="att6" value="6"/>
+              <parameter key="att7" value="7"/>
+              <parameter key="att8" value="8"/>
+              <parameter key="att9" value="9"/>
+              <parameter key="att10" value="10"/>
+              <parameter key="att11" value="11"/>
+              <parameter key="att12" value="12"/>
+              <parameter key="label" value="unnecessary"/>
+            </list>
+          </operator>
+          <connect from_op="Generate Data" from_port="output" to_op="Set label role to regular" to_port="example set input"/>
+          <connect from_op="Set label role to regular" from_port="example set output" to_op="Rename" to_port="example set input"/>
+          <connect from_op="Rename" from_port="example set output" to_port="out 1"/>
+          <portSpacing port="source_in 1" spacing="0"/>
+          <portSpacing port="sink_out 1" spacing="0"/>
+          <portSpacing port="sink_out 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="true" class="cremit:cremit_aggregation" compatibility="5.3.000" expanded="true" height="60" name="CremitAggregation" width="90" x="313" y="120">
+        <description>The operator containing the CReMIT method is set to start the generating of windows from the first Attribute to the last 13th unnecessary Attribute. Since in the 13th Attribute was omitted from the method by defining it in the "Attributes to skip" parameter, it will not be involved into the method at all.
+
+The involvement of values into the windows will start from the second previous Example compared to the actual Example. When a window reaches a lenght of 6, then the size of the next window will be 1 and it's starting Attribute will be the next to the previous window's starting Attribute. 
+
+The amount of Maximum time shifting is 2, which means that for an actual Example in the iteration, the generation of windows start from the 2nd previous Example. The NaN values only show, that the method was unable to involve values, for instance, the previous Examples of the first row. The type of aggregation is summary.</description>
+        <parameter key="Attributes to skip" value="unnecessary"/>
+        <parameter key="Starting time unit" value="1"/>
+        <parameter key="Ending time unit" value="13"/>
+        <parameter key="Maximum time shifting" value="2"/>
+        <parameter key="Ending record type" value="actual time records"/>
+        <parameter key="Ending previous record" value="1"/>
+        <parameter key="Maximum window size" value="6"/>
+        <parameter key="Type of aggregation" value="sum"/>
+      </operator>
+      <connect from_op="Data generation" from_port="out 1" to_op="CremitAggregation" to_port="example set"/>
+      <connect from_op="CremitAggregation" from_port="example set" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>

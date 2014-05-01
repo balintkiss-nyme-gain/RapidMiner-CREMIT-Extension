@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<operators name="cremit" version="5.0" docbundle="com/rapidminer/resources/i18n/OperatorsDocCremit">
+   <group key="">
+      <group key="cremit">
+         <operator>
+            <key>cremit_aggregation</key>
+            <class>com.rapidminer.operator.cremit.CremitAggregationOperator</class>
+         </operator>
+      </group>
+   </group>
+</operators>

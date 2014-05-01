@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<operatorHelp lang="en_EN">
+   <operator>
+      <name>Apply CReMIT Aggregation</name>
+      <synopsis>Applies the Cyclic Reverse Moving Intervals Techniques (CReMIT) on the Example Set</synopsis>
+      <help>&lt;p&gt; In many data analysis cases which involves periodic time series data, using the singular time data not always sufficient to determine every important relation between dependent and independent variables. It is also important to examine the effects of periods with time shifting, delayed and varying length.&lt;/p&gt;
+&lt;p&gt; In theory, the Cyclic Reverse Moving Intervals Technique – or CReMIT for short – systematically forms these periods by involving a number of singular time data into a window and aggregates the window’s content. The length of a new window increases every time by 1 when it’s formed. The user can define a starting point, the maximum length of a window, the aggregation function and can also define the amount of maximal time shifting, which determines the maximal time shifting compared to the starting point.&lt;/p&gt;
+&lt;p&gt; In practice, the method in RapidMiner iterates over Attributes of a single Example and generates a series of new windows by the parameters above. The first window only contains the value of the starting Attribute, then the lengths of windows in the next series always increase by 1 and the method involves the next Attributes with the starting Attribute and other already involved previous Attributes in the windows. Each new window is generated and appended to the Example Set as a new Attribute and its value contains the aggregation of the window’s content. When the method reached the maximal window size, then the creation of a new window series begins, whose first singular window is the next Attribute after the starting Attribute of the previous window series. This method iterates over every Example of the Example Set, forming multiple window series for each row.&lt;/p&gt;
+&lt;p&gt; As mentioned earlier, the analysis of shifted effects in time is important in many cases. The formed periodic window could contain singular Attributes from one or more previous row and could reach from one row to another. The following notation was introduced for the generated windows: a window is tagged with a letter-number pair, referring to the amount of shifting and to the interval of involved Attributes.&lt;/p&gt;
+&lt;p&gt; For example, in the “p9-a2” interval “p9” means “Previous September” and “a2” means “Actual February”. This means, that this window contains months beginning from the September of the previous year until the February of the actual year. In RapidMiner, the Attribute named “p9-a2” contains the aggregation from the 9th Attribute’s value of the previous Example to the 2nd Attribute’s value of the actual Example and this aggregation is iterated for every Example in the ExampleSet. The method also works for a larger time shifting, i.e. “2p9-a2”, where “2p9” is the September of the previous two years or the 9th Attribute from the second previous Example and there’s even a possibility of determining the end of a interval to be in a previous Example, i.e. “3p-p5”. If there’s no possibility in an actual Example to involve values from a previous Example then the value will be NaN.&lt;/p&gt;
+&lt;p&gt; The applied aggregation function based on the actual task could be summary, means or minimum and maximum selection.&lt;/p&gt;
+&lt;p&gt; A tutorial example of the extension can be found at https://github.com/kissb/CREMIT_Extension as a file called “CREMIT_Extension_tutorial.rpm” where the behavior of the CReMIT method could be observed. The process contains generated data with 12 attributes representing monthly data an additional attribute which is omitted from the aggregation process.&lt;/p&gt;         
+      </help>
+      <key>cremit_aggregation</key>
+   </operator>
+   
+   <group>
+      <key>cremit</key>
+      <name>CREMIT</name>
+   </group>
+</operatorHelp>

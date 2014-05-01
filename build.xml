@@ -1,0 +1,56 @@
+<project name="RapidMiner CREMIT Extension" default="install">
+	<description>Build file for the RapidMiner CREMIT extension</description>
+	
+	<presetdef name="javac">
+	    <javac includeantruntime="false" />
+	  </presetdef>
+	
+	<property name="rm.dir" location="../RapidMiner_Unuk" />
+
+	<property name="build.build" location="build" />
+	<property name="build.resources" location="resources" />
+	<property name="build.lib" location="lib" />
+
+	<property name="check.sources" location = "src" />
+	
+	<property name="javadoc.targetDir" location="javadoc" />
+
+	<property name="extension.name" value="CREMIT" />
+	<property name="extension.name.long" value="RapidMiner CREMIT Extension" />
+	<property name="extension.namespace" value="cremit" />
+    <property name="extension.vendor" value="University of West Hungary, Institute of Informatics and Economics" />
+    <property name="extension.admin" value="Bálint Kiss" />
+    <property name="extension.url" value="http://inf.nyme.hu/s" />
+
+
+	<property name="extension.needsVersion" value="5.3" />
+	<property name="extension.dependencies" value="" />
+		
+	<!-- Uncomment if the extension actually depends on other extensions -->
+	<!-- property name="build.dependentExtensions" value="true" /> -->
+
+	<property name="extension.initClass" value="com.rapidminer.PluginInitCremit" />
+	<property name="extension.objectDefinition" value="/com/rapidminer/resources/ioobjectsCremit.xml" />
+	<property name="extension.operatorDefinition" value="/com/rapidminer/resources/OperatorsCremit.xml" />
+	<property name="extension.parseRuleDefinition" value="/com/rapidminer/resources/parserulesCremit.xml" />
+	<property name="extension.groupProperties" value="/com/rapidminer/resources/groupsCremit.properties" />
+	<property name="extension.errorDescription" value="/com/rapidminer/resources/i18n/ErrorsCremit.properties" />
+	<property name="extension.userErrors" value="/com/rapidminer/resources/i18n/UserErrorMessagesCremit.properties" />
+	<property name="extension.guiDescription" value="/com/rapidminer/resources/i18n/GUICremit.properties" />
+
+
+	<!-- Src files -->
+	<path id="build.sources.path">
+		<dirset dir="src">
+			<include name="**" />
+		</dirset>
+	</path>
+	<fileset dir="src" id="build.sources">
+		<include name="**/*.java" />
+	</fileset>
+	<fileset id="build.dependentExtensions" dir="..">
+		<exclude name="**/*"/>
+	</fileset>
+
+	<import file="${rm.dir}/build_extension.xml" />
+</project>
